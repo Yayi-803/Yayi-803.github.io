@@ -1,7 +1,7 @@
 # use_logo如果为true, 需要在logo_image设置路径
 use_logo: false
 logo_image:  # 使用路径, 填写文件名即可(比如, logo_image: logo.png 指向 source/imgs/logo.png)
-navbar_text: Yayi # 如果没有Logo, 则设置为false, 并且设置navbar_text(否则默认为站点标题, 最好进行设置)
+navbar_text: Yayi_803 # 如果没有Logo, 则设置为false, 并且设置navbar_text(否则默认为站点标题, 最好进行设置)
 
 # 必填, 设定小型设备展示背景图, 指向source/imgs, 比如xs_bg_image: bg.png -> source/imgs/bg.png
 xs_bg_image: xsbg.gif
