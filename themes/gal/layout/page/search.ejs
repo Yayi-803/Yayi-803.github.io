@@ -1,0 +1,40 @@
+<section class="article well article-body">
+<h1>搜索文章</h1>
+<form action="/search/" method="get" class="form-inline">
+<label for="page-search">关键词</label>
+<input id="page-search" name="s" class="form-control" type="search" required>
+<button class="btn btn-danger" type="submit">搜索</button>
+</form>
+<p id="search-status" role="status" style="margin-top:20px"></p>
+<div id="search-results"></div>
+</section>
+<script>
+(function () {
+var query = (new URLSearchParams(location.search).get('s') || '').trim();
+var status = document.getElementById('search-status');
+var results = document.getElementById('search-results');
+document.getElementById('page-search').value = query;
+if (!query) { status.textContent = '输入关键词，查找文章。'; return; }
+status.textContent = '正在搜索…';
+fetch('/content.json').then(function (response) {
+if (!response.ok) throw new Error('Search unavailable');
+return response.json();
+}).then(function (data) {
+var matches = (data.posts || []).filter(function (post) {
+return ((post.title || '') + ' ' + (post.text || '')).toLocaleLowerCase().includes(query.toLocaleLowerCase());
+});
+status.textContent = matches.length ? '找到 ' + matches.length + ' 篇文章' : '没有找到相关文章，试试其他关键词。';
+matches.forEach(function (post) {
+var article = document.createElement('article');
+var title = document.createElement('h2');
+var link = document.createElement('a');
+link.href = '/' + post.path.replace(/^\/+/, '');
+link.textContent = post.title;
+title.appendChild(link); article.appendChild(title);
+var excerpt = document.createElement('p');
+excerpt.textContent = (post.text || '').slice(0, 160);
+article.appendChild(excerpt); results.appendChild(article);
+});
+}).catch(function () { status.textContent = '搜索暂时不可用，请刷新后重试。'; });
+}());
+</script>
